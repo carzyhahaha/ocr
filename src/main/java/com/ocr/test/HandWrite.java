@@ -86,7 +86,13 @@ public class HandWrite {
 					JSONArray words = line.getJSONArray("word");
 					for (int i2 = 0; i2 < words.size(); i2++) {
 						JSONObject word = words.getJSONObject(i2);
-						stringBuilder.append(word.get("content"));
+						String wordStr = word.getString("content");
+
+						stringBuilder.append(wordStr);
+
+						if (isEnglish(wordStr)) {
+							stringBuilder.append(" ");
+						}
 					}
 				}
 			}
@@ -97,4 +103,17 @@ public class HandWrite {
 		}
 		return stringBuilder.toString();
 	}
+
+	private static boolean isEnglish(String string) {
+		for (int i=0; i<string.length(); i++) {
+			char thisChar = string.charAt(i);
+			if( (thisChar >= 'a' && thisChar <= 'z') || (thisChar >= 'A' && thisChar <= 'Z') ) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

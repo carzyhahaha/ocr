@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.File;
 
 public class Client {
@@ -30,7 +32,7 @@ public class Client {
         JPanel panel1 = new JPanel();
         JLabel fileSelect = new JLabel("选择图片");
         panel1.add(fileSelect);
-        JTextField filePath = new JTextField(15);
+        JTextField filePath = new JTextField(30);
         panel1.add(filePath);
         JButton selectButton = new JButton("选择");
         JButton startButton = new JButton("识别");
@@ -40,9 +42,22 @@ public class Client {
 
 
         JPanel panel2 = new JPanel();
-        JTextArea textArea = new JTextArea(20, 100);
-        JPanel picPanel = new JPanel();
+        JTextArea textArea = new JTextArea(20, 60);
+        JPanel picPanel = new PicPanel();
         panel2.add(new JScrollPane(textArea));
+
+        JLabel picture = new JLabel("请选择图片"){
+            protected void paintComponent(Graphics g) {
+                if (StringUtils.isNotBlank(picPath)) {
+                    ImageIcon icon = new ImageIcon(picPath);
+                    Integer width = icon.getImage().getWidth(null);
+                    Integer height = icon.getImage().getHeight(null);
+                    g.drawImage(icon.getImage(), 0, 0, width, height,
+                            null);
+                }
+            }
+        };
+//        picPanel.add(picture);
 
         selectButton.addActionListener(new ActionListener() {
             @Override
@@ -56,10 +71,7 @@ public class Client {
                 }
                 filePath.setText(file.getAbsoluteFile().toString());
                 picPath = file.getAbsoluteFile().toString();
-                picPanel.removeAll();
                 jf.repaint();
-                ImageIcon image = new ImageIcon(picPath);
-                picPanel.add(new JLabel(image));
                 jf.revalidate();
             }
         });
@@ -104,23 +116,42 @@ public class Client {
             }
         });
 
-        // 创建一个垂直盒子容器, 把上面 3 个 JPanel 串起来作为内容面板添加到窗口
-        Box vBox = Box.createVerticalBox();
-        vBox.add(panel);
-        vBox.add(panel1);
-        vBox.add(panel2);
-        vBox.add(picPanel);
+//         创建一个垂直盒子容器, 把上面 3 个 JPanel 串起来作为内容面板添加到窗口
+//        Box vBox = Box.createVerticalBox();
+//        vBox.add(panel);
+//        vBox.add(panel1);
+//        vBox.add(panel2);
+//        vBox.add(picPanel);
 
 
-//        JPanel mainPanel = new JPanel();
-//        mainPanel.add(panel);
-//        mainPanel.add(panel1);
-//        mainPanel.add(panel2);
-//        mainPanel.add(picPanel);
+        SpringLayout layout = new SpringLayout();
+        JPanel mainPanel = new JPanel(layout);
+        mainPanel.add(panel);
+        mainPanel.add(panel1);
+        mainPanel.add(panel2);
+        picPanel.setPreferredSize(new Dimension(650, 375));
+        mainPanel.add(picPanel);
 
-        jf.setContentPane(vBox);
-        jf.pack();
-        jf.setLocationRelativeTo(null);
+        SpringLayout.Constraints labelCons = layout.getConstraints(panel);  // 从布局中获取指定组件的约束对象（如果没有，会自动创建）
+        labelCons.setX(Spring.constant(5));
+        labelCons.setY(Spring.constant(5));
+
+        SpringLayout.Constraints labelCons2 = layout.getConstraints(panel1);
+        labelCons2.setX(Spring.constant(5));
+        labelCons2.setY(Spring.constant(30));
+
+        SpringLayout.Constraints labelCons3 = layout.getConstraints(panel2);
+        labelCons3.setX(Spring.constant(5));
+        labelCons3.setY(Spring.constant(60));
+
+        SpringLayout.Constraints labelCons4 = layout.getConstraints(picPanel);
+        labelCons4.setX(Spring.constant(505));
+        labelCons4.setY(Spring.constant(60));
+
+
+        jf.setContentPane(mainPanel);
+        jf.setSize(1200, 500);
+//        jf.setLocationRelativeTo(null);
         jf.setVisible(true);
 
 
@@ -133,17 +164,28 @@ public class Client {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             icon = new ImageIcon(picPath);
+            double width = 650;
+            double height = 375;
             if (icon != null) {
+                int iWidth = icon.getImage().getWidth(null);
+                int iHeight = icon.getImage().getHeight(null);
+                double bl = 1;
+                if (iWidth > iHeight) {
+                    bl = width/iWidth;
+                } else {
+                    bl = height/iHeight;
+                }
 
                 g.drawImage(icon.getImage(),
-                        100,
-                        100,
-                        icon.getImage().getWidth(null),
-                        icon.getImage().getHeight(null),
+                        0,
+                        0,
+                        (int) (iWidth * bl),
+                        (int) (iHeight * bl),
                         null);
             }
 
         }
     }
+
 
 }

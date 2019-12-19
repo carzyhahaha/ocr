@@ -58,6 +58,9 @@ public class Printing {
 					for (int i2 = 0; i2 < words.size(); i2++) {
 						JSONObject word = words.getJSONObject(i2);
 						stringBuilder.append(word.get("content"));
+						if (isEnglish(word.getString("content"))) {
+							stringBuilder.append(" ");
+						}
 					}
 				}
 			}
@@ -82,5 +85,17 @@ public class Printing {
 		header.put("X-CheckSum", checkSum);
 		header.put("X-Appid", APPID);
 		return header;
+	}
+
+	private static boolean isEnglish(String string) {
+		for (int i=0; i<string.length(); i++) {
+			char thisChar = string.charAt(i);
+			if( (thisChar >= 'a' && thisChar <= 'z') || (thisChar >= 'A' && thisChar <= 'Z') ) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 }
