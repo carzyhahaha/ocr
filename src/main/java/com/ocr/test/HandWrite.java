@@ -94,6 +94,7 @@ public class HandWrite {
 							stringBuilder.append(" ");
 						}
 					}
+					stringBuilder.append("\n");
 				}
 			}
 		} catch (ParseException e) {

@@ -24,7 +24,7 @@ public class Printing {
 	// 接口密钥(webapi类型应用开通印刷文字识别服务后，控制台--我的应用---印刷文字识别---服务的apikey)
 	private static final String API_KEY = "152011958af32f299c8561b543a56dcb";
 	// 是否返回位置信息
-	private static final String LOCATION = "false";
+	private static final String LOCATION = "true";
 	// 语种(可选值：en（英文），cn|en（中文或中英混合)
 	private static final String LANGUAGE = "cn|en";
 	// 图片地址,图片最短边至少15px，最长边最大4096px，格式jpg、png、bmp
@@ -62,6 +62,7 @@ public class Printing {
 							stringBuilder.append(" ");
 						}
 					}
+					stringBuilder.append("\n");
 				}
 			}
 		} catch (IOException e) {

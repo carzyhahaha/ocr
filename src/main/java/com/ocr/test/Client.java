@@ -129,7 +129,7 @@ public class Client {
         mainPanel.add(panel);
         mainPanel.add(panel1);
         mainPanel.add(panel2);
-        picPanel.setPreferredSize(new Dimension(650, 375));
+        picPanel.setPreferredSize(new Dimension(1080, 780));
         mainPanel.add(picPanel);
 
         SpringLayout.Constraints labelCons = layout.getConstraints(panel);  // 从布局中获取指定组件的约束对象（如果没有，会自动创建）
@@ -150,7 +150,7 @@ public class Client {
 
 
         jf.setContentPane(mainPanel);
-        jf.setSize(1200, 500);
+        jf.setSize(1600, 900);
 //        jf.setLocationRelativeTo(null);
         jf.setVisible(true);
 
@@ -164,8 +164,8 @@ public class Client {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             icon = new ImageIcon(picPath);
-            double width = 650;
-            double height = 375;
+            double width = 1080;
+            double height = 780;
             if (icon != null) {
                 int iWidth = icon.getImage().getWidth(null);
                 int iHeight = icon.getImage().getHeight(null);
@@ -183,6 +183,7 @@ public class Client {
                         (int) (iHeight * bl),
                         null);
             }
+
 
         }
     }
